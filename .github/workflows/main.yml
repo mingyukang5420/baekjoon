@@ -84,11 +84,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # 8) master에도 동기화
+      # 8) main에도 동기화
       - name: Commit dist to default branch
         if: ${{ steps.check.outputs.commit_count != '0' }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: sync dist assets to default branch"
-          branch: master
+          branch: main
           file_pattern: dist/**

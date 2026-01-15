@@ -4,6 +4,8 @@ on:
   schedule:
     - cron: "0 */6 * * *"          # (UTC) 6시간마다 실행
   workflow_dispatch:                # 수동 실행
+  push:
+    branches: [ main ]
 
 permissions:
   contents: write                   # output 브랜치 푸시 권한

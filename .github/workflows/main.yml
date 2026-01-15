@@ -23,7 +23,7 @@ jobs:
       - name: Check commits within last 6 hours on master
         id: check
         run: |
-          git fetch origin master --depth=1                      # 최신 커밋만 가볍게 가져오기
+          git fetch origin main --depth=1                      # 최신 커밋만 가볍게 가져오기
           COUNT=$(git log origin/master --since='6 hours ago' --oneline | wc -l | tr -d ' ')
           echo "commit_count=$COUNT" >> "$GITHUB_OUTPUT"         # 출력값 노출
 

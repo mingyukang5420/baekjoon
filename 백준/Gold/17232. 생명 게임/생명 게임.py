@@ -30,7 +30,7 @@ def count_surround_area(row, col, arr):
 
     """
 
-    global N, M, K, a, b
+    global N, M, K
     cnt = 0
     for searching_row in range(row - K, row + (K + 1)):
         if 0 <= searching_row < N:
@@ -38,14 +38,24 @@ def count_surround_area(row, col, arr):
             for searching_col in range(col - K, col + (K + 1)):
                 if 0 <= searching_col < M:
 
-                    if not (searching_row == row and searching_col == col) \
-                            and arr[searching_row][searching_col]:
+                    if arr[searching_row][searching_col] is True \
+                            and not (searching_row == row and searching_col == col):
                         cnt += 1
 
     return cnt
 
 
-def check_next_status(row, col, arr):
+def get_summation_matrix(N, M, arr):
+    result = [[0 for _ in range(M)] for _ in range(N)]
+
+    for r in range(N):
+        for c in range(M):
+            result[r][c] = count_surround_area(r, c, arr)
+
+    return result
+
+
+def check_next_status(row, col, arr, accumulated_arr):
     """
     확인을 원하는 row, col을 입력하고 현재 arr 상태를 입력하면 다음 상황에서 살아남을지 여부를 반환
 
@@ -58,9 +68,9 @@ def check_next_status(row, col, arr):
         is_alive (bool): 다음 시간에서 생존 여부
 
     """
-    global N, M, K, a, b
+    global a, b
 
-    cnt = count_surround_area(row, col, arr)
+    cnt = accumulated_arr[row][col]
     live_state = arr[row][col]
 
     is_alive = True if live_state else False
@@ -113,10 +123,11 @@ def main(N, M, T, K, a, b, arr):
 
     next_arr = deepcopy(arr)
     for time in range(1, T + 1):
+        accumulated_arr = get_summation_matrix(N, M, arr)
 
         for row in range(N):
             for col in range(M):
-                next_arr[row][col] = check_next_status(row, col, arr)
+                next_arr[row][col] = check_next_status(row, col, arr, accumulated_arr)
 
         arr = deepcopy(next_arr)
 
@@ -125,7 +136,6 @@ def main(N, M, T, K, a, b, arr):
 
 if __name__ == "__main__":
     import sys
-
     N, M, T, K, a, b = read_parameters()
     given_arr = read_input(N, M)
     ans = main(N, M, T, K, a, b, given_arr)
